@@ -14,19 +14,20 @@ public class CustomerService {
     private CustomerRepository customerRepository;
 
     public void createCustomer(Customer customerRequest) throws IllegalAccessException {
-
         String phoneNumber = customerRequest.getPhoneNumber();
+
         Optional<Customer> optionalCustomer = customerRepository.selectCustomerByPhoneNumber(phoneNumber);
 
         if(optionalCustomer.isPresent()){
-            Customer customer= optionalCustomer.get();
+
+            Customer customer = optionalCustomer.get();
+
             if(customer.getName().equals(customerRequest.getName())){
                 return;
             }
+            throw new IllegalAccessException(String.format("phone number [%s] is taken",phoneNumber));
 
-            throw  new IllegalAccessException(String.format("phone number [%s] is taken",phoneNumber ));
         }
         customerRepository.save(customerRequest);
-
     }
 }
